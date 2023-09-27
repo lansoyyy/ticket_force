@@ -1,3 +1,3 @@
 import 'package:flutter/material.dart';
 
-var primary = const Color.fromARGB(255, 139, 223, 143);
+var primary = const Color(0xffddffbb);
