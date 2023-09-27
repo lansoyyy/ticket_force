@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticket_force/screens/home_screen.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/button_widget.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
@@ -51,7 +52,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               ButtonWidget(
                 label: 'Log in',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const HomeScreen()));
+                },
               ),
             ],
           ),

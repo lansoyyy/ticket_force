@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_force/screens/login_screen.dart';
+import 'package:ticket_force/screens/signup_screen.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/button_widget.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
@@ -51,7 +52,10 @@ class LandingScreen extends StatelessWidget {
               height: 5,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SignupScreen()));
+              },
               child: TextWidget(
                 text: 'Sign up',
                 fontSize: 18,
