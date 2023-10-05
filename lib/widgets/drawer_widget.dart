@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticket_force/screens/login_screen.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
 
 import '../utils/colors.dart';
@@ -25,12 +26,12 @@ class _MyDrawerState extends State<DrawerWidget> {
               decoration: BoxDecoration(
                 color: primary,
               ),
-              accountEmail:
-                  TextWidget(text: '', fontSize: 12, color: Colors.white),
+              accountEmail: TextWidget(
+                  text: 'sample@gmail.com', fontSize: 12, color: Colors.black),
               accountName: TextWidget(
-                text: '',
+                text: 'Spencer So',
                 fontSize: 14,
-                color: Colors.white,
+                color: Colors.black,
               ),
               currentAccountPicture: const Padding(
                 padding: EdgeInsets.all(5.0),
@@ -55,17 +56,6 @@ class _MyDrawerState extends State<DrawerWidget> {
             ListTile(
               title: TextWidget(
                 text: 'About Us',
-                fontSize: 12,
-                color: Colors.black,
-              ),
-              onTap: () {
-                // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //     builder: (context) => const MainHomeScreen()));
-              },
-            ),
-            ListTile(
-              title: TextWidget(
-                text: 'Contact Us',
                 fontSize: 12,
                 color: Colors.black,
               ),
@@ -106,10 +96,10 @@ class _MyDrawerState extends State<DrawerWidget> {
                             ),
                             MaterialButton(
                               onPressed: () async {
-                                // Navigator.of(context).pushReplacement(
-                                //     MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             const LoginScreen()));
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen()));
                               },
                               child: const Text(
                                 'Continue',
