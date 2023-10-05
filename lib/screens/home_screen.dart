@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticket_force/screens/tabs/drivers_tab.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/drawer_widget.dart';
 
@@ -17,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-      const SizedBox(),
+      const DriversTab(),
       const SizedBox(),
       const SizedBox(),
     ];
