@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 30,
               ),
               ButtonWidget(
+                radius: 10,
                 label: 'Log in',
                 onPressed: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
