@@ -109,6 +109,8 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             textCapitalization: widget.textCapitalization!,
             keyboardType: widget.inputType,
             decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.5),
               suffixIcon: widget.showEye! == true
                   ? IconButton(
                       onPressed: () {
@@ -119,11 +121,11 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                       icon: widget.isObscure!
                           ? const Icon(
                               Icons.visibility,
-                              color: Colors.grey,
+                              color: Colors.black,
                             )
                           : const Icon(
                               Icons.visibility_off,
-                              color: Colors.grey,
+                              color: Colors.black,
                             ))
                   : const SizedBox(),
               contentPadding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
