@@ -23,9 +23,9 @@ class _MyDrawerState extends State<DrawerWidget> {
           padding: const EdgeInsets.only(top: 0),
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: primary,
-              ),
+              decoration: const BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(color: Colors.grey, width: 0.5))),
               accountEmail: TextWidget(
                   text: 'sample@gmail.com', fontSize: 12, color: Colors.black),
               accountName: TextWidget(
