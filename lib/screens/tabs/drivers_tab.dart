@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
 
 class DriversTab extends StatefulWidget {
@@ -116,6 +117,7 @@ class _DriversTabState extends State<DriversTab> {
                         height: 40,
                         width: double.infinity,
                         decoration: BoxDecoration(
+                            color: primary,
                             border: Border.all(
                               color: Colors.white,
                             ),
@@ -132,15 +134,20 @@ class _DriversTabState extends State<DriversTab> {
                                 nameSearched = value;
                               });
                             },
-                            decoration: const InputDecoration(
-                                labelStyle: TextStyle(
+                            decoration: InputDecoration(
+                                fillColor: primary,
+                                filled: true,
+                                labelStyle: const TextStyle(
                                   color: Colors.white,
                                 ),
                                 hintText: 'Search Name/Licensed Number',
-                                hintStyle: TextStyle(fontFamily: 'QRegular'),
-                                suffixIcon: Icon(
+                                hintStyle: const TextStyle(
+                                    fontFamily: 'Bold',
+                                    color: Colors.black,
+                                    fontSize: 12),
+                                suffixIcon: const Icon(
                                   Icons.search,
-                                  color: Colors.grey,
+                                  color: Colors.black,
                                 )),
                             controller: searchController,
                           ),
@@ -163,9 +170,9 @@ class _DriversTabState extends State<DriversTab> {
                               fontFamily: 'Bold',
                             ),
                             subtitle: TextWidget(
-                              text: '2020300527',
+                              text: '[2020300527]',
                               fontSize: 12,
-                              color: Colors.grey,
+                              color: Colors.red,
                               fontFamily: 'Regular',
                             ),
                             trailing: IconButton(

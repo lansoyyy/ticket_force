@@ -11,7 +11,6 @@ class LandingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primary,
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(

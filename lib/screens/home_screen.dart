@@ -62,7 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Container(
           height: double.infinity,
           width: double.infinity,
-          decoration: const BoxDecoration(),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/Gray.png'), fit: BoxFit.cover),
+          ),
           child: SafeArea(child: tabs[_index]),
         ));
   }
