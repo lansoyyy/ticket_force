@@ -32,11 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 20,
+                    height: 150,
                   ),
                   Image.asset(
                     'assets/images/logs.png',
-                    width: 300,
+                    width: 200,
                   ),
                   const SizedBox(
                     height: 10,
@@ -66,6 +66,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => const HomeScreen()));
                     },
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: TextWidget(
+                      text: 'Forgot Password?',
+                      fontSize: 14,
+                      fontFamily: 'Bold',
+                      color: primary,
+                    ),
                   ),
                 ],
               ),

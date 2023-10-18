@@ -23,14 +23,7 @@ class LandingScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
-                height: 20,
-              ),
-              Image.asset(
-                'assets/images/logs.png',
-                width: 300,
-              ),
-              const SizedBox(
-                height: 10,
+                height: 450,
               ),
               Container(
                 width: double.infinity,
@@ -39,9 +32,8 @@ class LandingScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: TextWidget(
-                      text:
-                          'Unlocking Unforgettable Experiences,\nOne Ticket at a Time!',
-                      fontSize: 14,
+                      text: 'Welcome to TicketForce',
+                      fontSize: 18,
                       fontFamily: 'Bold',
                       color: Colors.black,
                     ),
@@ -49,42 +41,24 @@ class LandingScreen extends StatelessWidget {
                 ),
               ),
               const Expanded(child: SizedBox()),
-              ButtonWidget(
-                width: 200,
-                color: primary,
-                textColor: Colors.black,
-                radius: 20,
-                label: 'Log in',
+              MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                minWidth: 200,
+                height: 50,
+                color: primary.withOpacity(0.60),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const LoginScreen()));
                 },
+                child: const Icon(
+                  Icons.keyboard_double_arrow_right_rounded,
+                  color: Colors.black,
+                  size: 32,
+                ),
               ),
               const SizedBox(
-                height: 5,
-              ),
-              TextWidget(
-                text: 'or',
-                fontSize: 14,
-                color: Colors.white,
-                fontFamily: 'Medium',
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              ButtonWidget(
-                width: 200,
-                color: Colors.white.withOpacity(0.7),
-                textColor: Colors.black,
-                radius: 20,
-                label: 'Sign up',
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SignupScreen()));
-                },
-              ),
-              const SizedBox(
-                height: 30,
+                height: 50,
               ),
             ],
           ),
