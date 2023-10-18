@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticket_force/screens/tabs/register_driver_tab.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
 
@@ -195,7 +196,11 @@ class _DriversTabState extends State<DriversTab> {
                           fontFamily: 'Regular',
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const RegisterDriverTab()));
+                          },
                           child: TextWidget(
                             text: 'CLICK HERE',
                             fontSize: 12,
