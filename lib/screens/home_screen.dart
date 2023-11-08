@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
             'assets/images/logs.png',
             height: 50,
           ),
-          centerTitle: true,
         ),
         bottomNavigationBar: Material(
           elevation: 0,

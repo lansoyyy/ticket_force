@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ticket_force/screens/tabs/register_driver_tab.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/button_widget.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
@@ -12,6 +11,81 @@ class ApprehensionTab extends StatefulWidget {
 }
 
 class _ApprehensionTabState extends State<ApprehensionTab> {
+  List<Map<String, dynamic>> violationList = [
+    {"Name of Violation": "Beating the red light", "Amount": 1000},
+    {"Name of Violation": "Clamping", "Amount": 1000},
+    {"Name of Violation": "Colorum", "Amount": 5000},
+    {
+      "Name of Violation":
+          "Driving under the influence of liquor/Narcotic drugs",
+      "Amount": 4000
+    },
+    {"Name of Violation": "Driving without D.L", "Amount": 1500},
+    {
+      "Name of Violation": "Expired O.R or C.R/No O.R or C.R/Expired D.L",
+      "Amount": 2000
+    },
+    {"Name of Violation": "Failure to carry O.R/C.R", "Amount": 500},
+    {
+      "Name of Violation":
+          "Failure to obey traffic device/traffic enforcers/signs",
+      "Amount": 1000
+    },
+    {"Name of Violation": "Illegal Terminal", "Amount": 5000},
+    {
+      "Name of Violation":
+          "Installation of car stereo, Video Player in PUJs and motorcycles",
+      "Amount": 1000
+    },
+    {"Name of Violation": "Invalid or Delinquent D.L", "Amount": 3000},
+    {"Name of Violation": "Involved Traffic Accident", "Amount": 150},
+    {
+      "Name of Violation": "No Helmet/Non-wearing of Helmet (Back ride)",
+      "Amount": 500
+    },
+    {
+      "Name of Violation": "No Helmet/Non-wearing of Helmet (Rider)",
+      "Amount": 1000
+    },
+    {"Name of Violation": "No left turn", "Amount": 1000},
+    {"Name of Violation": "No Parking/Illegal Parking", "Amount": 500},
+    {"Name of Violation": "No Plate", "Amount": 2000},
+    {"Name of Violation": "No Seat Belt", "Amount": 150},
+    {"Name of Violation": "No Side Mirror", "Amount": 150},
+    {"Name of Violation": "Obstruction", "Amount": 300},
+    {"Name of Violation": "Obstruction to sidewalk", "Amount": 500},
+    {"Name of Violation": "Operating out of line route", "Amount": 5000},
+    {"Name of Violation": "Over speeding/Counterflow", "Amount": 1000},
+    {"Name of Violation": "Overloading", "Amount": 500},
+    {"Name of Violation": "Parking on side walk", "Amount": 1000},
+    {"Name of Violation": "Reckless Driving", "Amount": 2000},
+    {
+      "Name of Violation": "Smoke belching mufflers, noise controlling device",
+      "Amount": 2500
+    },
+    {
+      "Name of Violation": "Smoking banned inside the public vehicle",
+      "Amount": 3000
+    },
+    {
+      "Name of Violation":
+          "Stopping/standing or parking prohibited in specific places",
+      "Amount": 500
+    },
+    {"Name of Violation": "Top load passenger or cargoes", "Amount": 3000},
+    {"Name of Violation": "Trip cutting", "Amount": 5000},
+    {"Name of Violation": "Unloading/no-loading", "Amount": 100},
+    {
+      "Name of Violation":
+          "Unregistered Motor/delinquent/invalid/suspended motor",
+      "Amount": 2000
+    },
+    {
+      "Name of Violation": "Violation of c.o No. 20-6952 - covid related",
+      "Amount": 1000
+    },
+  ];
+
   int index = 0;
   final searchController = TextEditingController();
   String nameSearched = '';
@@ -249,32 +323,14 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        for (int i = 0; i < 10; i++)
+                        for (int i = 0; i < violationList.length; i++)
                           SizedBox(
-                            width: 160,
+                            width: 300,
                             child: ListTile(
                               leading:
                                   const Icon(Icons.check_box_outline_blank),
                               title: TextWidget(
-                                text: 'Violation $i',
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        for (int i = 0; i < 10; i++)
-                          SizedBox(
-                            width: 160,
-                            child: ListTile(
-                              leading:
-                                  const Icon(Icons.check_box_outline_blank),
-                              title: TextWidget(
-                                text: 'Violation $i',
+                                text: violationList[i]['Name of Violation'],
                                 fontSize: 14,
                               ),
                             ),
@@ -365,7 +421,7 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                     color: Colors.red,
                   ),
                 ),
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < violationList.length; i++)
                   ListTile(
                     leading: TextWidget(
                       text: '[Violation $i]',
