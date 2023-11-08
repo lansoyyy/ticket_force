@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_force/screens/tabs/apprehension_tab.dart';
 import 'package:ticket_force/screens/tabs/drivers_tab.dart';
+import 'package:ticket_force/screens/tabs/history_tab.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/drawer_widget.dart';
 
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final tabs = [
       const DriversTab(),
       const ApprehensionTab(),
-      const SizedBox(),
+      const HistoryTab(),
     ];
 
     return Scaffold(
