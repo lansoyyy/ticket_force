@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:ticket_force/screens/tabs/register_driver_tab.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
@@ -15,6 +16,10 @@ class DriversTab extends StatefulWidget {
 class _DriversTabState extends State<DriversTab> {
   final searchController = TextEditingController();
   String nameSearched = '';
+
+  final box = GetStorage();
+
+  String id = '';
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -195,29 +200,50 @@ class _DriversTabState extends State<DriversTab> {
                               itemCount: data.docs.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
-                                  leading:
-                                      Image.asset('assets/images/profile.png'),
-                                  title: TextWidget(
-                                    text: data.docs[index]['fname'] +
-                                        ' ' +
-                                        data.docs[index]['lname'],
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontFamily: 'Bold',
-                                  ),
-                                  subtitle: TextWidget(
-                                    text: '[${data.docs[index]['license']}]',
-                                    fontSize: 12,
-                                    color: Colors.red,
-                                    fontFamily: 'Regular',
-                                  ),
-                                  trailing: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.check_box,
+                                    onTap: () {},
+                                    leading: Image.asset(
+                                        'assets/images/profile.png'),
+                                    title: TextWidget(
+                                      text: data.docs[index]['fname'] +
+                                          ' ' +
+                                          data.docs[index]['lname'],
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontFamily: 'Bold',
                                     ),
-                                  ),
-                                );
+                                    subtitle: TextWidget(
+                                      text: '[${data.docs[index]['license']}]',
+                                      fontSize: 12,
+                                      color: Colors.red,
+                                      fontFamily: 'Regular',
+                                    ),
+                                    trailing: id == data.docs[index].id
+                                        ? IconButton(
+                                            onPressed: () {
+                                              box.remove('id');
+                                              setState(() {
+                                                id = '';
+                                              });
+                                            },
+                                            icon: const Icon(
+                                              Icons.check_box,
+                                            ),
+                                          )
+                                        : IconButton(
+                                            onPressed: () {
+                                              box.write(
+                                                  'id', data.docs[index].id);
+                                              setState(() {
+                                                id = data.docs[index].id;
+
+                                                index++;
+                                              });
+                                            },
+                                            icon: const Icon(
+                                              Icons
+                                                  .check_box_outline_blank_outlined,
+                                            ),
+                                          ));
                               },
                             ),
                           );

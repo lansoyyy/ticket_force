@@ -5,6 +5,8 @@ import 'package:ticket_force/screens/tabs/history_tab.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/drawer_widget.dart';
 
+int index = 0;
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -13,12 +15,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _index = 0;
-
   late dynamic userData1 = {};
 
   @override
   Widget build(BuildContext context) {
+    print(index);
     final tabs = [
       const DriversTab(),
       const ApprehensionTab(),
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           color: Colors.transparent,
           child: BottomNavigationBar(
-            currentIndex: _index,
+            currentIndex: index,
             backgroundColor: primary,
             selectedLabelStyle: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
             onTap: (value) {
               setState(() {
-                _index = value;
+                index = value;
               });
             },
           ),
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
             image: DecorationImage(
                 image: AssetImage('assets/images/Gray.png'), fit: BoxFit.cover),
           ),
-          child: SafeArea(child: tabs[_index]),
+          child: SafeArea(child: tabs[index]),
         ));
   }
 }

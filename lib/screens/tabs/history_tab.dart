@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
 
 class HistoryTab extends StatefulWidget {
@@ -98,28 +100,55 @@ class _HistoryTabState extends State<HistoryTab> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 250,
-                      child: ListView.builder(
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Image.asset('assets/images/profile.png'),
-                            title: TextWidget(
-                              text: 'John Doe',
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontFamily: 'Bold',
-                            ),
-                            trailing: TextWidget(
-                              text: '[Information]',
-                              fontSize: 12,
-                              color: Colors.red,
-                              fontFamily: 'Regular',
+                    StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('Record')
+                            .orderBy('dateTime')
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            print(snapshot.error);
+                            return const Center(child: Text('Error'));
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          }
+
+                          final data = snapshot.requireData;
+                          return SizedBox(
+                            height: 250,
+                            child: ListView.builder(
+                              itemCount: data.docs.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  leading:
+                                      Image.asset('assets/images/profile.png'),
+                                  title: TextWidget(
+                                    text: data.docs[index]['name'],
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontFamily: 'Bold',
+                                  ),
+                                  trailing: TextWidget(
+                                    text: '[${data.docs[index]['license']}]',
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                    fontFamily: 'Regular',
+                                  ),
+                                );
+                              },
                             ),
                           );
-                        },
-                      ),
-                    ),
+                        }),
                   ],
                 ),
               ),

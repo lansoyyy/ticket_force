@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:ticket_force/screens/home_screen.dart';
+import 'package:ticket_force/services/add_record.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/button_widget.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
+import 'package:ticket_force/widgets/toast_widget.dart';
 
 class ApprehensionTab extends StatefulWidget {
   const ApprehensionTab({super.key});
@@ -89,6 +94,10 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
   int index = 0;
   final searchController = TextEditingController();
   String nameSearched = '';
+
+  List selected = [];
+
+  final box = GetStorage();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -186,56 +195,85 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Card(
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 150,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 20,
+              StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Drivers')
+                      .where('id', isEqualTo: box.read('id'))
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return const Center(child: Text('Error'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ),
                         ),
-                        TextWidget(
-                          text: 'Driver Selected',
-                          fontSize: 18,
-                          fontFamily: 'Bold',
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Row(
+                      );
+                    }
+
+                    final data = snapshot.requireData;
+
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Card(
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 150,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Icon(
-                                Icons.person,
-                                size: 75,
+                              const SizedBox(
+                                height: 20,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextWidget(
-                                    text: 'Spencer So',
-                                    fontSize: 18,
-                                    fontFamily: 'Bold',
-                                  ),
-                                  TextWidget(
-                                    text: '[Information]',
-                                    fontSize: 14,
-                                    fontFamily: 'Medium',
-                                  ),
-                                ],
+                              TextWidget(
+                                text: 'Driver Selected',
+                                fontSize: 18,
+                                fontFamily: 'Bold',
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.person,
+                                      size: 75,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TextWidget(
+                                          text:
+                                              '${data.docs.first['fname']} ${data.docs.first['lname']}',
+                                          fontSize: 18,
+                                          fontFamily: 'Bold',
+                                        ),
+                                        TextWidget(
+                                          text:
+                                              '[${data.docs.first['license']}]',
+                                          fontSize: 14,
+                                          fontFamily: 'Medium',
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+                      ),
+                    );
+                  }),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Card(
@@ -327,8 +365,22 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                           SizedBox(
                             width: 300,
                             child: ListTile(
-                              leading:
-                                  const Icon(Icons.check_box_outline_blank),
+                              leading: selected.contains(violationList[i])
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selected.remove(violationList[i]);
+                                        });
+                                      },
+                                      child: const Icon(Icons.check_box))
+                                  : GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selected.add(violationList[i]);
+                                        });
+                                      },
+                                      child: const Icon(
+                                          Icons.check_box_outline_blank)),
                               title: TextWidget(
                                 text: violationList[i]['Name of Violation'],
                                 fontSize: 14,
@@ -361,6 +413,7 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                       color: primary,
                       label: 'Done',
                       onPressed: () {
+                        print(selected);
                         setState(() {
                           index++;
                         });
@@ -382,93 +435,122 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
   Widget third() {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
-      child: Container(
-        width: double.infinity,
-        height: 300,
-        decoration: BoxDecoration(
-            color: Colors.grey[300], borderRadius: BorderRadius.circular(10)),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextWidget(
-                    text: '[Ticket Number]',
-                    fontSize: 14,
-                    fontFamily: 'Bold',
-                    color: Colors.red,
+      child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Drivers')
+              .where('id', isEqualTo: box.read('id'))
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              return const Center(child: Text('Error'));
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Padding(
+                padding: EdgeInsets.only(top: 50),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
                   ),
                 ),
-                TextWidget(
-                  text: 'Spencer So',
-                  fontSize: 24,
-                  fontFamily: 'Bold',
-                  color: Colors.black,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: TextWidget(
-                    text: '[Information]',
-                    fontSize: 14,
-                    fontFamily: 'Bold',
-                    color: Colors.red,
+              );
+            }
+
+            final data = snapshot.requireData;
+            return Container(
+              width: double.infinity,
+              height: 300,
+              decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10)),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextWidget(
+                        text: data.docs.first['fname'] +
+                            ' ' +
+                            data.docs.first['lname'],
+                        fontSize: 24,
+                        fontFamily: 'Bold',
+                        color: Colors.black,
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: TextWidget(
+                          text: '[${data.docs.first['license']}]',
+                          fontSize: 14,
+                          fontFamily: 'Bold',
+                          color: Colors.red,
+                        ),
+                      ),
+                      for (int i = 0; i < selected.length; i++)
+                        ListTile(
+                          leading: TextWidget(
+                            text: '${selected[i]['Name of Violation']}',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.red,
+                          ),
+                          trailing: TextWidget(
+                            text: '${selected[i]['Amount']}',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.red,
+                          ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 15),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: TextWidget(
+                            text: '[TOTAL]',
+                            fontSize: 14,
+                            fontFamily: 'Bold',
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Center(
+                        child: ButtonWidget(
+                          textColor: Colors.black,
+                          radius: 20,
+                          width: 300,
+                          color: primary,
+                          label: 'Print Ticket',
+                          onPressed: () {
+                            addRecord(
+                                data.docs.first['fname'] +
+                                    ' ' +
+                                    data.docs.first['lname'],
+                                data.docs.first['license'],
+                                selected);
+                            showToast('Record saved succesfully!');
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => const HomeScreen()));
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
                   ),
                 ),
-                for (int i = 0; i < violationList.length; i++)
-                  ListTile(
-                    leading: TextWidget(
-                      text: '[Violation $i]',
-                      fontSize: 14,
-                      fontFamily: 'Bold',
-                      color: Colors.red,
-                    ),
-                    trailing: TextWidget(
-                      text: '[Amount]',
-                      fontSize: 14,
-                      fontFamily: 'Bold',
-                      color: Colors.red,
-                    ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 15),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: TextWidget(
-                      text: '[TOTAL]',
-                      fontSize: 14,
-                      fontFamily: 'Bold',
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: ButtonWidget(
-                    textColor: Colors.black,
-                    radius: 20,
-                    width: 300,
-                    color: primary,
-                    label: 'Print Ticket',
-                    onPressed: () {},
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+              ),
+            );
+          }),
     );
   }
 }
