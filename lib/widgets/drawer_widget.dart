@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticket_force/screens/home_screen.dart';
 import 'package:ticket_force/screens/login_screen.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
 
@@ -49,8 +50,8 @@ class _MyDrawerState extends State<DrawerWidget> {
                 color: Colors.black,
               ),
               onTap: () {
-                // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //     builder: (context) => const MainHomeScreen()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const HomeScreen()));
               },
             ),
             ListTile(
@@ -60,8 +61,10 @@ class _MyDrawerState extends State<DrawerWidget> {
                 color: Colors.black,
               ),
               onTap: () {
-                // Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //     builder: (context) => const MainHomeScreen()));
+                showAboutDialog(
+                    context: context,
+                    applicationName: 'TicketForce',
+                    applicationVersion: 'v1.0.0');
               },
             ),
             ListTile(
