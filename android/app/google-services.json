@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "185677887310",
+    "project_id": "ticketforce-5ac87",
+    "storage_bucket": "ticketforce-5ac87.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185677887310:android:5c2d30b29f40ee6063901f",
+        "android_client_info": {
+          "package_name": "com.example.ticket_force"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAByCqKWLfXqq4N9ezzZCarQOtLFNfXPWQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
