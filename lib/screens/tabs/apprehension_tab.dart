@@ -142,7 +142,7 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextWidget(
-                          text: '45 TICKETS',
+                          text: '0 TICKETS',
                           fontSize: 18,
                           color: Colors.black,
                           fontFamily: 'Bold',

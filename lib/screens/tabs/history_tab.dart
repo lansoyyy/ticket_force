@@ -64,7 +64,7 @@ class _HistoryTabState extends State<HistoryTab> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextWidget(
-                          text: '45 TICKETS',
+                          text: '0 TICKETS',
                           fontSize: 18,
                           color: Colors.black,
                           fontFamily: 'Bold',
