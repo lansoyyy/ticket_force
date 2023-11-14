@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_force/screens/home_screen.dart';
+import 'package:ticket_force/services/add_user.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/button_widget.dart';
 import 'package:ticket_force/widgets/textfield_widget.dart';
+import 'package:ticket_force/widgets/toast_widget.dart';
 
 class RegisterDriverTab extends StatefulWidget {
   const RegisterDriverTab({super.key});
@@ -111,6 +113,15 @@ class _RegisterDriverTabState extends State<RegisterDriverTab> {
                     textColor: Colors.black,
                     label: 'REGISTER DRIVER',
                     onPressed: () {
+                      addDriver(
+                          firstnameController.text,
+                          lastnameController.text,
+                          contactnumberController.text,
+                          addressController.text,
+                          licensednumberController.text,
+                          vehicletypeController.text,
+                          platenumberController.text);
+                      showToast('Driver added succesfully!');
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => const HomeScreen()));
                     },
