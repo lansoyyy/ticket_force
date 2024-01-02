@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
 
 class HistoryTab extends StatefulWidget {
@@ -88,67 +87,141 @@ class _HistoryTabState extends State<HistoryTab> {
             height: 20,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: Container(
               width: double.infinity,
-              height: 300,
+              height: 520,
               decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('Record')
-                            .orderBy('dateTime')
-                            .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            print(snapshot.error);
-                            return const Center(child: Text('Error'));
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Padding(
-                              padding: EdgeInsets.only(top: 50),
-                              child: Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('Record')
+                              .orderBy('dateTime', descending: true)
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              print(snapshot.error);
+                              return const Center(child: Text('Error'));
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 50),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
                                 ),
+                              );
+                            }
+
+                            final data = snapshot.requireData;
+                            return SizedBox(
+                              height: 500,
+                              child: ListView.builder(
+                                itemCount: data.docs.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 5, bottom: 5),
+                                    child: ListTile(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) {
+                                            return SizedBox(
+                                              height: 500,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    TextWidget(
+                                                      text: 'Violation List',
+                                                      fontSize: 18,
+                                                      fontFamily: 'Bold',
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 300,
+                                                      child: ListView.builder(
+                                                        itemCount: data
+                                                            .docs[index]
+                                                                ['violations']
+                                                            .length,
+                                                        itemBuilder:
+                                                            (context, index1) {
+                                                          return ListTile(
+                                                            leading: const Icon(
+                                                                Icons.receipt),
+                                                            title: TextWidget(
+                                                              text: data.docs[index]
+                                                                          [
+                                                                          'violations']
+                                                                      [index1][
+                                                                  'Name of Violation'],
+                                                              fontSize: 14,
+                                                              fontFamily:
+                                                                  'Bold',
+                                                            ),
+                                                            trailing:
+                                                                TextWidget(
+                                                              text: data
+                                                                  .docs[index][
+                                                                      'violations']
+                                                                      [index1]
+                                                                      ['Amount']
+                                                                  .toString(),
+                                                              fontSize: 15,
+                                                              fontFamily:
+                                                                  'Medium',
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      leading: Image.asset(
+                                          'assets/images/profile.png'),
+                                      title: TextWidget(
+                                        text: data.docs[index]['name'],
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                        fontFamily: 'Bold',
+                                      ),
+                                      trailing: TextWidget(
+                                        text:
+                                            '[${data.docs[index]['license']}]',
+                                        fontSize: 12,
+                                        color: Colors.red,
+                                        fontFamily: 'Regular',
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             );
-                          }
-
-                          final data = snapshot.requireData;
-                          return SizedBox(
-                            height: 250,
-                            child: ListView.builder(
-                              itemCount: data.docs.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  leading:
-                                      Image.asset('assets/images/profile.png'),
-                                  title: TextWidget(
-                                    text: data.docs[index]['name'],
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontFamily: 'Bold',
-                                  ),
-                                  trailing: TextWidget(
-                                    text: '[${data.docs[index]['license']}]',
-                                    fontSize: 12,
-                                    color: Colors.red,
-                                    fontFamily: 'Regular',
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        }),
+                          }),
+                    ),
                   ],
                 ),
               ),

@@ -44,6 +44,7 @@ dependencies:
   fluttertoast:
   url_launcher:
   intl: ^0.18.1
+  bluetooth_print:
 
 dev_dependencies:
   flutter_test:

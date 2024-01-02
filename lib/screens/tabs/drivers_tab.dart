@@ -95,10 +95,10 @@ class _DriversTabState extends State<DriversTab> {
             height: 20,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: Container(
               width: double.infinity,
-              height: 300,
+              height: 600,
               decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(10)),
@@ -195,7 +195,7 @@ class _DriversTabState extends State<DriversTab> {
 
                           final data = snapshot.requireData;
                           return SizedBox(
-                            height: 130,
+                            height: 425,
                             child: ListView.builder(
                               itemCount: data.docs.length,
                               itemBuilder: (context, index) {

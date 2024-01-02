@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:ticket_force/screens/home_screen.dart';
+import 'package:ticket_force/screens/tabs/print_page.dart';
 import 'package:ticket_force/services/add_record.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/button_widget.dart';
@@ -95,7 +95,7 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
   final searchController = TextEditingController();
   String nameSearched = '';
 
-  List selected = [];
+  List<Map<String, dynamic>> selected = [];
 
   final box = GetStorage();
   @override
@@ -274,26 +274,6 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                       ),
                     );
                   }),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Card(
-                    child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextWidget(
-                        text: 'Violations',
-                        fontSize: 14,
-                        fontFamily: 'Medium',
-                      ),
-                      const Icon(
-                        Icons.menu,
-                      ),
-                    ],
-                  ),
-                )),
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -347,7 +327,8 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                   height: 10,
                 ),
                 TextWidget(
-                  text: 'Total Amount',
+                  text:
+                      'Total Amount (${selected.fold(0, (acc, violation) => acc + int.parse(violation["Amount"].toString()))})',
                   fontSize: 18,
                   fontFamily: 'Bold',
                 ),
@@ -511,7 +492,8 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                         child: Align(
                           alignment: Alignment.topRight,
                           child: TextWidget(
-                            text: '[TOTAL]',
+                            text:
+                                '[${selected.fold(0, (acc, violation) => acc + int.parse(violation["Amount"].toString()))}]',
                             fontSize: 14,
                             fontFamily: 'Bold',
                             color: Colors.red,
@@ -536,9 +518,10 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                                 data.docs.first['license'],
                                 selected);
                             showToast('Record saved succesfully!');
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PrintPage(
+                                      data: selected,
+                                    )));
                           },
                         ),
                       ),
