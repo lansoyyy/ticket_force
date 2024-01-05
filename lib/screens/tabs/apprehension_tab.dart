@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +99,8 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
   String nameSearched = '';
 
   List<Map<String, dynamic>> selected = [];
+
+  var rng = Random();
 
   final box = GetStorage();
   @override
@@ -489,6 +493,7 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
   }
 
   Widget third() {
+    int num1 = rng.nextInt(1000000);
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: StreamBuilder<QuerySnapshot>(
@@ -530,13 +535,36 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                       const SizedBox(
                         height: 10,
                       ),
-                      TextWidget(
-                        text: data.docs.first['fname'] +
-                            ' ' +
-                            data.docs.first['lname'],
-                        fontSize: 24,
-                        fontFamily: 'Bold',
-                        color: Colors.black,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextWidget(
+                            text: data.docs.first['fname'] +
+                                ' ' +
+                                data.docs.first['lname'],
+                            fontSize: 24,
+                            fontFamily: 'Bold',
+                            color: Colors.black,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextWidget(
+                                text: 'Ticket No.',
+                                fontSize: 16,
+                                fontFamily: 'Bold',
+                                color: Colors.black,
+                              ),
+                              TextWidget(
+                                text: '$num1',
+                                fontSize: 16,
+                                fontFamily: 'Bold',
+                                color: Colors.black,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       Align(
                         alignment: Alignment.topLeft,
@@ -578,28 +606,58 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Center(
-                        child: ButtonWidget(
-                          textColor: Colors.black,
-                          radius: 20,
-                          width: 300,
-                          color: primary,
-                          label: 'Print Ticket',
-                          onPressed: () {
-                            addRecord(
-                                data.docs.first['fname'] +
-                                    ' ' +
-                                    data.docs.first['lname'],
-                                data.docs.first['license'],
-                                selected);
-                            showToast('Record saved succesfully!');
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => PrintPage(
-                                      data: selected,
-                                    )));
-                          },
-                        ),
-                      ),
+                      StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('enforcers')
+                              .where('uid',
+                                  isEqualTo:
+                                      FirebaseAuth.instance.currentUser!.uid)
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              print(snapshot.error);
+                              return const Center(child: Text('Error'));
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 50),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              );
+                            }
+
+                            final mydata = snapshot.requireData;
+
+                            return Center(
+                              child: ButtonWidget(
+                                textColor: Colors.black,
+                                radius: 20,
+                                width: 300,
+                                color: primary,
+                                label: 'Print Ticket',
+                                onPressed: () {
+                                  addRecord(
+                                      data.docs.first['fname'] +
+                                          ' ' +
+                                          data.docs.first['lname'],
+                                      data.docs.first['license'],
+                                      selected,
+                                      mydata.docs.first['ID'],
+                                      num1);
+                                  showToast('Record saved succesfully!');
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => PrintPage(
+                                            data: selected,
+                                          )));
+                                },
+                              ),
+                            );
+                          }),
                       const SizedBox(
                         height: 20,
                       ),

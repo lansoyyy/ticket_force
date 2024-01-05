@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future addRecord(name, license, violations) async {
+Future addRecord(name, license, violations, enforcerId, ticketNumber) async {
   final docUser = FirebaseFirestore.instance.collection('Record').doc();
 
   final json = {
@@ -12,7 +12,9 @@ Future addRecord(name, license, violations) async {
     'type': 'Driver',
     'dateTime': DateTime.now(),
     'uid': FirebaseAuth.instance.currentUser!.uid,
-    'id': docUser.id
+    'id': docUser.id,
+    'enforcerId': enforcerId,
+    'ticketNumber': ticketNumber
   };
 
   await docUser.set(json);
