@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomNavigationBarItem(
                   label: 'Drivers', icon: Icon(Icons.person)),
               BottomNavigationBarItem(
-                  label: 'Report', icon: Icon(Icons.receipt)),
+                  label: 'Apprehension', icon: Icon(Icons.receipt)),
               BottomNavigationBarItem(
                   label: 'History', icon: Icon(Icons.history)),
             ],

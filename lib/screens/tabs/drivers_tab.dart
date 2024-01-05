@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ticket_force/screens/tabs/register_driver_tab.dart';
@@ -28,69 +29,121 @@ class _DriversTabState extends State<DriversTab> {
           const SizedBox(
             height: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10)),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          'assets/images/profile.png',
-                          height: 100,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextWidget(
-                          text: 'Spencer So',
-                          fontSize: 24,
-                          fontFamily: 'Bold',
-                          color: Colors.black,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextWidget(
-                          text: '2020300527',
-                          fontSize: 14,
-                          fontFamily: 'Medium',
-                          color: Colors.grey,
-                        ),
-                      ],
+          StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('enforcers')
+                  .where('uid',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return const Center(child: Text('Error'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.black,
+                    )),
+                  );
+                }
+
+                final data = snapshot.requireData;
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/profile.png',
+                                height: 100,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              TextWidget(
+                                text:
+                                    '${data.docs.first['firstname']} ${data.docs.first['lastname']}',
+                                fontSize: 24,
+                                fontFamily: 'Bold',
+                                color: Colors.black,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              TextWidget(
+                                text: '${data.docs.first['ID']}',
+                                fontSize: 14,
+                                fontFamily: 'Medium',
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                          StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Record')
+                                  .where('uid',
+                                      isEqualTo: FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  print(snapshot.error);
+                                  return const Center(child: Text('Error'));
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Padding(
+                                    padding: EdgeInsets.only(top: 50),
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                    )),
+                                  );
+                                }
+
+                                final record = snapshot.requireData;
+                                return Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextWidget(
+                                      text: '${record.docs.length} TICKET/S',
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Bold',
+                                    ),
+                                    TextWidget(
+                                      text: 'TICKETFORCE',
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontFamily: 'Bold',
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ],
+                      ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextWidget(
-                          text: '0 TICKETS',
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontFamily: 'Bold',
-                        ),
-                        TextWidget(
-                          text: 'TICKETFORCE',
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontFamily: 'Bold',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  ),
+                );
+              }),
           const SizedBox(
             height: 20,
           ),

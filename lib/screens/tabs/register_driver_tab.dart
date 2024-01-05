@@ -113,17 +113,28 @@ class _RegisterDriverTabState extends State<RegisterDriverTab> {
                     textColor: Colors.black,
                     label: 'REGISTER DRIVER',
                     onPressed: () {
-                      addDriver(
-                          firstnameController.text,
-                          lastnameController.text,
-                          contactnumberController.text,
-                          addressController.text,
-                          licensednumberController.text,
-                          vehicletypeController.text,
-                          platenumberController.text);
-                      showToast('Driver added succesfully!');
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const HomeScreen()));
+                      if (firstnameController.text == '' &&
+                          lastnameController.text == '' &&
+                          contactnumberController.text == '' &&
+                          addressController.text == '' &&
+                          licensednumberController.text == '' &&
+                          vehicletypeController.text == '' &&
+                          platenumberController.text == '') {
+                        addDriver(
+                            firstnameController.text,
+                            lastnameController.text,
+                            contactnumberController.text,
+                            addressController.text,
+                            licensednumberController.text,
+                            vehicletypeController.text,
+                            platenumberController.text);
+                        showToast('Driver added succesfully!');
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const HomeScreen()));
+                      } else {
+                        showToast(
+                            'Cannot proceed! Please provide all the driver details');
+                      }
                     },
                   ),
                   const SizedBox(
