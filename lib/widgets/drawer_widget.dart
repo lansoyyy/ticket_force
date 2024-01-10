@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ticket_force/screens/home_screen.dart';
 import 'package:ticket_force/screens/login_screen.dart';
+import 'package:ticket_force/screens/tabs/aboutus_page.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -87,10 +88,8 @@ class _MyDrawerState extends State<DrawerWidget> {
                       color: Colors.black,
                     ),
                     onTap: () {
-                      showAboutDialog(
-                          context: context,
-                          applicationName: 'TicketForce',
-                          applicationVersion: 'v1.0.0');
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const AboutUs()));
                     },
                   ),
                   ListTile(
