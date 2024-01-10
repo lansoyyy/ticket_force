@@ -523,8 +523,7 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
               width: double.infinity,
               height: 500,
               decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10)),
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -602,6 +601,51 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                             color: Colors.red,
                           ),
                         ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('enforcers')
+                                  .where('uid',
+                                      isEqualTo: FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  print(snapshot.error);
+                                  return const Center(child: Text('Error'));
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Padding(
+                                    padding: EdgeInsets.only(top: 50),
+                                    child: Center(
+                                        child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                    )),
+                                  );
+                                }
+
+                                final data = snapshot.requireData;
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20),
+                                  child: TextWidget(
+                                    text:
+                                        '[${data.docs.first['firstname']} ${data.docs.first['lastname']}]',
+                                    fontSize: 16,
+                                    fontFamily: 'Regular',
+                                    color: Colors.grey,
+                                  ),
+                                );
+                              }),
+                        ],
                       ),
                       const SizedBox(
                         height: 20,

@@ -227,6 +227,9 @@ class _DriversTabState extends State<DriversTab> {
                             .where('fname',
                                 isLessThan:
                                     '${toBeginningOfSentenceCase(nameSearched)}z')
+                            .where('uid',
+                                isEqualTo:
+                                    FirebaseAuth.instance.currentUser!.uid)
                             .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {

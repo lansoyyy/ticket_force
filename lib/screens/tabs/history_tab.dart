@@ -158,6 +158,9 @@ class _HistoryTabState extends State<HistoryTab> {
                           stream: FirebaseFirestore.instance
                               .collection('Record')
                               .orderBy('dateTime', descending: true)
+                              .where('uid',
+                                  isEqualTo:
+                                      FirebaseAuth.instance.currentUser!.uid)
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
