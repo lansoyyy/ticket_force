@@ -1,15 +1,19 @@
 import 'dart:math';
-
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:ticket_force/screens/home_screen.dart';
 import 'package:ticket_force/screens/tabs/print_page.dart';
 import 'package:ticket_force/services/add_record.dart';
 import 'package:ticket_force/utils/colors.dart';
 import 'package:ticket_force/widgets/button_widget.dart';
 import 'package:ticket_force/widgets/text_widget.dart';
 import 'package:ticket_force/widgets/toast_widget.dart';
+import 'package:printing/printing.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:pdf/widgets.dart' as pw;
 
 class ApprehensionTab extends StatefulWidget {
   const ApprehensionTab({super.key});
@@ -103,6 +107,25 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
   var rng = Random();
 
   final box = GetStorage();
+
+  final doc = pw.Document();
+
+  printing(Uint8List capturedImage) async {
+    doc.addPage(pw.Page(
+      build: (pw.Context context) {
+        return pw.Container(
+            height: double.infinity,
+            width: double.infinity,
+            child: pw.Image(
+              pw.MemoryImage(capturedImage),
+            ));
+      },
+    ));
+
+    await Printing.layoutPdf(onLayout: (format) async => doc.save());
+  }
+
+  final ssController = ScreenshotController();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -528,127 +551,138 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextWidget(
-                            text: data.docs.first['fname'] +
-                                ' ' +
-                                data.docs.first['lname'],
-                            fontSize: 24,
-                            fontFamily: 'Bold',
-                            color: Colors.black,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextWidget(
-                                text: 'Ticket No.',
-                                fontSize: 16,
-                                fontFamily: 'Bold',
-                                color: Colors.black,
-                              ),
-                              TextWidget(
-                                text: '$num1',
-                                fontSize: 16,
-                                fontFamily: 'Bold',
-                                color: Colors.black,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: TextWidget(
-                          text: '[${data.docs.first['license']}]',
-                          fontSize: 14,
-                          fontFamily: 'Bold',
-                          color: Colors.red,
-                        ),
-                      ),
-                      for (int i = 0; i < selected.length; i++)
-                        ListTile(
-                          leading: TextWidget(
-                            text: '${selected[i]['Name of Violation']}',
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.red,
-                          ),
-                          trailing: TextWidget(
-                            text: '${selected[i]['Amount']}',
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.red,
-                          ),
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15),
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: TextWidget(
-                            text:
-                                '[${selected.fold(0, (acc, violation) => acc + int.parse(violation["Amount"].toString()))}]',
-                            fontSize: 14,
-                            fontFamily: 'Bold',
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance
-                                  .collection('enforcers')
-                                  .where('uid',
-                                      isEqualTo: FirebaseAuth
-                                          .instance.currentUser!.uid)
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  print(snapshot.error);
-                                  return const Center(child: Text('Error'));
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Padding(
-                                    padding: EdgeInsets.only(top: 50),
-                                    child: Center(
-                                        child: CircularProgressIndicator(
+                      Screenshot(
+                        controller: ssController,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextWidget(
+                                  text: data.docs.first['fname'] +
+                                      ' ' +
+                                      data.docs.first['lname'],
+                                  fontSize: 24,
+                                  fontFamily: 'Bold',
+                                  color: Colors.black,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextWidget(
+                                      text: 'Ticket No.',
+                                      fontSize: 16,
+                                      fontFamily: 'Bold',
                                       color: Colors.black,
-                                    )),
-                                  );
-                                }
+                                    ),
+                                    TextWidget(
+                                      text: '$num1',
+                                      fontSize: 16,
+                                      fontFamily: 'Bold',
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: TextWidget(
+                                text: '[${data.docs.first['license']}]',
+                                fontSize: 14,
+                                fontFamily: 'Bold',
+                                color: Colors.red,
+                              ),
+                            ),
+                            for (int i = 0; i < selected.length; i++)
+                              ListTile(
+                                leading: TextWidget(
+                                  text: '${selected[i]['Name of Violation']}',
+                                  fontSize: 14,
+                                  fontFamily: 'Bold',
+                                  color: Colors.red,
+                                ),
+                                trailing: TextWidget(
+                                  text: '${selected[i]['Amount']}',
+                                  fontSize: 14,
+                                  fontFamily: 'Bold',
+                                  color: Colors.red,
+                                ),
+                              ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: TextWidget(
+                                  text:
+                                      '[${selected.fold(0, (acc, violation) => acc + int.parse(violation["Amount"].toString()))}]',
+                                  fontSize: 14,
+                                  fontFamily: 'Bold',
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('enforcers')
+                                        .where('uid',
+                                            isEqualTo: FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasError) {
+                                        print(snapshot.error);
+                                        return const Center(
+                                            child: Text('Error'));
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Padding(
+                                          padding: EdgeInsets.only(top: 50),
+                                          child: Center(
+                                              child: CircularProgressIndicator(
+                                            color: Colors.black,
+                                          )),
+                                        );
+                                      }
 
-                                final data = snapshot.requireData;
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, right: 20),
-                                  child: TextWidget(
-                                    text:
-                                        '[${data.docs.first['firstname']} ${data.docs.first['lastname']}]',
-                                    fontSize: 16,
-                                    fontFamily: 'Regular',
-                                    color: Colors.grey,
-                                  ),
-                                );
-                              }),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
+                                      final data = snapshot.requireData;
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 20, right: 20),
+                                        child: TextWidget(
+                                          text:
+                                              '[${data.docs.first['firstname']} ${data.docs.first['lastname']}]',
+                                          fontSize: 16,
+                                          fontFamily: 'Regular',
+                                          color: Colors.grey,
+                                        ),
+                                      );
+                                    }),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
                       ),
                       StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
@@ -693,18 +727,25 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                                       selected,
                                       mydata.docs.first['ID'],
                                       num1);
+
+                                  ssController
+                                      .capture(
+                                          delay:
+                                              const Duration(milliseconds: 10))
+                                      .then((capturedImage) async {
+                                    printing(capturedImage!);
+                                  }).catchError((onError) {
+                                    print(onError);
+                                  });
                                   showToast('Record saved succesfully!');
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => PrintPage(
-                                            data: selected,
-                                          )));
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HomeScreen()));
                                 },
                               ),
                             );
                           }),
-                      const SizedBox(
-                        height: 20,
-                      ),
                     ],
                   ),
                 ),
