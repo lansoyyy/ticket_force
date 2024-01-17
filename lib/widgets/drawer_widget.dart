@@ -60,13 +60,14 @@ class _MyDrawerState extends State<DrawerWidget> {
                       fontSize: 14,
                       color: Colors.black,
                     ),
-                    currentAccountPicture: const Padding(
-                      padding: EdgeInsets.all(5.0),
+                    currentAccountPicture: Padding(
+                      padding: const EdgeInsets.all(5.0),
                       child: CircleAvatar(
                         minRadius: 50,
                         maxRadius: 50,
-                        backgroundImage:
-                            AssetImage('assets/images/profile.png'),
+                        backgroundImage: NetworkImage(
+                          data.docs.first['imageDownloadURL'],
+                        ),
                       ),
                     ),
                   ),
