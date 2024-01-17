@@ -14,7 +14,10 @@ Future addRecord(name, license, violations, enforcerId, ticketNumber) async {
     'uid': FirebaseAuth.instance.currentUser!.uid,
     'id': docUser.id,
     'enforcerId': enforcerId,
-    'ticketNumber': ticketNumber
+    'ticketNumber': ticketNumber,
+    'day': DateTime.now().day,
+    'month': DateTime.now().month,
+    'year': DateTime.now().year,
   };
 
   await docUser.set(json);

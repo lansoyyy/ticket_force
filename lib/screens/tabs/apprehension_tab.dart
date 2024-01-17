@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ticket_force/screens/tabs/print_page.dart';
@@ -19,80 +20,80 @@ class ApprehensionTab extends StatefulWidget {
 }
 
 class _ApprehensionTabState extends State<ApprehensionTab> {
-  List<Map<String, dynamic>> violationList = [
-    {"Name of Violation": "Beating the red light", "Amount": 1000},
-    {"Name of Violation": "Clamping", "Amount": 1000},
-    {"Name of Violation": "Colorum", "Amount": 5000},
-    {
-      "Name of Violation":
-          "Driving under the influence of\nliquor/Narcotic drugs",
-      "Amount": 4000
-    },
-    {"Name of Violation": "Driving without D.L", "Amount": 1500},
-    {
-      "Name of Violation": "Expired O.R or C.R/No O.R\nor C.R/Expired D.L",
-      "Amount": 2000
-    },
-    {"Name of Violation": "Failure to carry O.R/C.R", "Amount": 500},
-    {
-      "Name of Violation":
-          "Failure to obey traffic\ndevice/traffic enforcers/signs",
-      "Amount": 1000
-    },
-    {"Name of Violation": "Illegal Terminal", "Amount": 5000},
-    {
-      "Name of Violation":
-          "Installation of car stereo, Video Player\nin PUJs and motorcycles",
-      "Amount": 1000
-    },
-    {"Name of Violation": "Invalid or Delinquent D.L", "Amount": 3000},
-    {"Name of Violation": "Involved Traffic Accident", "Amount": 150},
-    {
-      "Name of Violation": "No Helmet/Non-wearing of Helmet (Back ride)",
-      "Amount": 500
-    },
-    {
-      "Name of Violation": "No Helmet/Non-wearing of\nHelmet (Rider)",
-      "Amount": 1000
-    },
-    {"Name of Violation": "No left turn", "Amount": 1000},
-    {"Name of Violation": "No Parking/Illegal Parking", "Amount": 500},
-    {"Name of Violation": "No Plate", "Amount": 2000},
-    {"Name of Violation": "No Seat Belt", "Amount": 150},
-    {"Name of Violation": "No Side Mirror", "Amount": 150},
-    {"Name of Violation": "Obstruction", "Amount": 300},
-    {"Name of Violation": "Obstruction to sidewalk", "Amount": 500},
-    {"Name of Violation": "Operating out of line route", "Amount": 5000},
-    {"Name of Violation": "Over speeding/Counterflow", "Amount": 1000},
-    {"Name of Violation": "Overloading", "Amount": 500},
-    {"Name of Violation": "Parking on side walk", "Amount": 1000},
-    {"Name of Violation": "Reckless Driving", "Amount": 2000},
-    {
-      "Name of Violation": "Smoke belching mufflers,\nnoise controlling device",
-      "Amount": 2500
-    },
-    {
-      "Name of Violation": "Smoking banned inside the\npublic vehicle",
-      "Amount": 3000
-    },
-    {
-      "Name of Violation":
-          "Stopping/standing or parking prohibited in\nspecific places",
-      "Amount": 500
-    },
-    {"Name of Violation": "Top load passenger or cargoes", "Amount": 3000},
-    {"Name of Violation": "Trip cutting", "Amount": 5000},
-    {"Name of Violation": "Unloading/no-loading", "Amount": 100},
-    {
-      "Name of Violation":
-          "Unregistered Motor/delinquent/invalid/suspended motor",
-      "Amount": 2000
-    },
-    {
-      "Name of Violation": "Violation of c.o No. 20-6952 -\ncovid related",
-      "Amount": 1000
-    },
-  ];
+  // List<Map<String, dynamic>> violationList = [
+  //   {"Name of Violation": "Beating the red light", "Amount": 1000},
+  //   {"Name of Violation": "Clamping", "Amount": 1000},
+  //   {"Name of Violation": "Colorum", "Amount": 5000},
+  //   {
+  //     "Name of Violation":
+  //         "Driving under the influence of\nliquor/Narcotic drugs",
+  //     "Amount": 4000
+  //   },
+  //   {"Name of Violation": "Driving without D.L", "Amount": 1500},
+  //   {
+  //     "Name of Violation": "Expired O.R or C.R/No O.R\nor C.R/Expired D.L",
+  //     "Amount": 2000
+  //   },
+  //   {"Name of Violation": "Failure to carry O.R/C.R", "Amount": 500},
+  //   {
+  //     "Name of Violation":
+  //         "Failure to obey traffic\ndevice/traffic enforcers/signs",
+  //     "Amount": 1000
+  //   },
+  //   {"Name of Violation": "Illegal Terminal", "Amount": 5000},
+  //   {
+  //     "Name of Violation":
+  //         "Installation of car stereo, Video Player\nin PUJs and motorcycles",
+  //     "Amount": 1000
+  //   },
+  //   {"Name of Violation": "Invalid or Delinquent D.L", "Amount": 3000},
+  //   {"Name of Violation": "Involved Traffic Accident", "Amount": 150},
+  //   {
+  //     "Name of Violation": "No Helmet/Non-wearing of Helmet (Back ride)",
+  //     "Amount": 500
+  //   },
+  //   {
+  //     "Name of Violation": "No Helmet/Non-wearing of\nHelmet (Rider)",
+  //     "Amount": 1000
+  //   },
+  //   {"Name of Violation": "No left turn", "Amount": 1000},
+  //   {"Name of Violation": "No Parking/Illegal Parking", "Amount": 500},
+  //   {"Name of Violation": "No Plate", "Amount": 2000},
+  //   {"Name of Violation": "No Seat Belt", "Amount": 150},
+  //   {"Name of Violation": "No Side Mirror", "Amount": 150},
+  //   {"Name of Violation": "Obstruction", "Amount": 300},
+  //   {"Name of Violation": "Obstruction to sidewalk", "Amount": 500},
+  //   {"Name of Violation": "Operating out of line route", "Amount": 5000},
+  //   {"Name of Violation": "Over speeding/Counterflow", "Amount": 1000},
+  //   {"Name of Violation": "Overloading", "Amount": 500},
+  //   {"Name of Violation": "Parking on side walk", "Amount": 1000},
+  //   {"Name of Violation": "Reckless Driving", "Amount": 2000},
+  //   {
+  //     "Name of Violation": "Smoke belching mufflers,\nnoise controlling device",
+  //     "Amount": 2500
+  //   },
+  //   {
+  //     "Name of Violation": "Smoking banned inside the\npublic vehicle",
+  //     "Amount": 3000
+  //   },
+  //   {
+  //     "Name of Violation":
+  //         "Stopping/standing or parking prohibited in\nspecific places",
+  //     "Amount": 500
+  //   },
+  //   {"Name of Violation": "Top load passenger or cargoes", "Amount": 3000},
+  //   {"Name of Violation": "Trip cutting", "Amount": 5000},
+  //   {"Name of Violation": "Unloading/no-loading", "Amount": 100},
+  //   {
+  //     "Name of Violation":
+  //         "Unregistered Motor/delinquent/invalid/suspended motor",
+  //     "Amount": 2000
+  //   },
+  //   {
+  //     "Name of Violation": "Violation of c.o No. 20-6952 -\ncovid related",
+  //     "Amount": 1000
+  //   },
+  // ];
 
   int index = 0;
   final searchController = TextEditingController();
@@ -151,9 +152,12 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Image.asset(
-                                'assets/images/profile.png',
-                                height: 100,
+                              CircleAvatar(
+                                minRadius: 50,
+                                maxRadius: 50,
+                                backgroundImage: NetworkImage(
+                                  data.docs.first['imageDownloadURL'],
+                                ),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -182,6 +186,9 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                                   .where('uid',
                                       isEqualTo: FirebaseAuth
                                           .instance.currentUser!.uid)
+                                  .where('month',
+                                      isEqualTo: DateTime.now().month)
+                                  .where('day', isEqualTo: DateTime.now().day)
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -389,7 +396,7 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                   children: [
                     TextWidget(
                       text:
-                          'Total Amount (${selected.fold(0, (acc, violation) => acc + int.parse(violation["Amount"].toString()))})',
+                          'Total Amount (${selected.fold(0, (acc, violation) => acc + int.parse(violation["amount"].toString()))})',
                       fontSize: 18,
                       fontFamily: 'Bold',
                       color: Colors.white,
@@ -401,91 +408,137 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
             const SizedBox(
               height: 10,
             ),
-            Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('Violations')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(child: Text('Error'));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 50),
+                      child: Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.black,
+                      )),
+                    );
+                  }
+
+                  final record = snapshot.requireData;
+                  return Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              for (int i = 0; i < violationList.length; i++)
-                                SizedBox(
-                                  width: 300,
-                                  child: ListTile(
-                                    leading: selected.contains(violationList[i])
-                                        ? GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                selected
-                                                    .remove(violationList[i]);
-                                              });
-                                            },
-                                            child: const Icon(Icons.check_box))
-                                        : GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                selected.add(violationList[i]);
-                                              });
-                                            },
-                                            child: const Icon(
-                                                Icons.check_box_outline_blank)),
-                                    title: TextWidget(
-                                      text: violationList[i]
-                                          ['Name of Violation'],
-                                      fontSize: 14,
-                                    ),
-                                  ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    for (int i = 0; i < record.docs.length; i++)
+                                      Builder(builder: (context) {
+                                        return SizedBox(
+                                          width: 300,
+                                          child: ListTile(
+                                            leading: selected.any((element) =>
+                                                    element.toString() ==
+                                                    record.docs[i]
+                                                        .data()
+                                                        .toString())
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        Map<String, dynamic>
+                                                            data = record
+                                                                    .docs[i]
+                                                                    .data()
+                                                                as Map<String,
+                                                                    dynamic>;
+
+                                                        selected.removeWhere(
+                                                            (element) =>
+                                                                mapEquals(
+                                                                    element,
+                                                                    data));
+                                                      });
+                                                    },
+                                                    child: const Icon(
+                                                        Icons.check_box),
+                                                  )
+                                                : GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        Map<String, dynamic>
+                                                            data = record
+                                                                    .docs[i]
+                                                                    .data()
+                                                                as Map<String,
+                                                                    dynamic>;
+                                                        selected.add(data);
+                                                      });
+                                                    },
+                                                    child: const Icon(Icons
+                                                        .check_box_outline_blank),
+                                                  ),
+                                            title: TextWidget(
+                                              text: record.docs[i]['name'],
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                  ],
                                 ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ButtonWidget(
+                                textColor: Colors.black,
+                                radius: 20,
+                                width: 150,
+                                color: Colors.red,
+                                label: 'Cancel',
+                                onPressed: () {
+                                  setState(() {
+                                    index--;
+                                  });
+                                },
+                              ),
+                              ButtonWidget(
+                                textColor: Colors.black,
+                                radius: 20,
+                                width: 150,
+                                color: primary,
+                                label: 'Done',
+                                onPressed: () {
+                                  print(selected);
+                                  setState(() {
+                                    index++;
+                                  });
+                                },
+                              ),
                             ],
+                          ),
+                          const SizedBox(
+                            height: 20,
                           ),
                         ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ButtonWidget(
-                          textColor: Colors.black,
-                          radius: 20,
-                          width: 150,
-                          color: Colors.red,
-                          label: 'Cancel',
-                          onPressed: () {
-                            setState(() {
-                              index--;
-                            });
-                          },
-                        ),
-                        ButtonWidget(
-                          textColor: Colors.black,
-                          radius: 20,
-                          width: 150,
-                          color: primary,
-                          label: 'Done',
-                          onPressed: () {
-                            print(selected);
-                            setState(() {
-                              index++;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  );
+                }),
           ],
         ),
       ),

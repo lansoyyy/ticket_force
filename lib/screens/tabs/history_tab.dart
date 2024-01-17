@@ -61,9 +61,12 @@ class _HistoryTabState extends State<HistoryTab> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Image.asset(
-                                'assets/images/profile.png',
-                                height: 100,
+                              CircleAvatar(
+                                minRadius: 50,
+                                maxRadius: 50,
+                                backgroundImage: NetworkImage(
+                                  data.docs.first['imageDownloadURL'],
+                                ),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -92,6 +95,9 @@ class _HistoryTabState extends State<HistoryTab> {
                                   .where('uid',
                                       isEqualTo: FirebaseAuth
                                           .instance.currentUser!.uid)
+                                  .where('month',
+                                      isEqualTo: DateTime.now().month)
+                                  .where('day', isEqualTo: DateTime.now().day)
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
