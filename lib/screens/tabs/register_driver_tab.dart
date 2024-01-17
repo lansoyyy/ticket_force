@@ -113,13 +113,13 @@ class _RegisterDriverTabState extends State<RegisterDriverTab> {
                     textColor: Colors.black,
                     label: 'REGISTER DRIVER',
                     onPressed: () {
-                      if (firstnameController.text == '' &&
-                          lastnameController.text == '' &&
-                          contactnumberController.text == '' &&
-                          addressController.text == '' &&
-                          licensednumberController.text == '' &&
-                          vehicletypeController.text == '' &&
-                          platenumberController.text == '') {
+                      if (firstnameController.text != '' &&
+                          lastnameController.text != '' &&
+                          contactnumberController.text != '' &&
+                          addressController.text != '' &&
+                          licensednumberController.text != '' &&
+                          vehicletypeController.text != '' &&
+                          platenumberController.text != '') {
                         addDriver(
                             firstnameController.text,
                             lastnameController.text,

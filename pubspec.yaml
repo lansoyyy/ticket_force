@@ -45,6 +45,8 @@ dependencies:
   url_launcher:
   intl: ^0.18.1
   bluetooth_print:
+  printing: ^5.9.3
+  screenshot:
 
 dev_dependencies:
   flutter_test:
