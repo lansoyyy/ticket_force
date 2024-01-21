@@ -230,11 +230,12 @@ class _HistoryTabState extends State<HistoryTab> {
                                                             leading: const Icon(
                                                                 Icons.receipt),
                                                             title: TextWidget(
-                                                              text: data.docs[index]
-                                                                          [
-                                                                          'violations']
-                                                                      [index1][
-                                                                  'Name of Violation'],
+                                                              text: data.docs[
+                                                                          index]
+                                                                      [
+                                                                      'violations']
+                                                                  [
+                                                                  index1]['name'],
                                                               fontSize: 14,
                                                               fontFamily:
                                                                   'Bold',
@@ -245,7 +246,7 @@ class _HistoryTabState extends State<HistoryTab> {
                                                                   .docs[index][
                                                                       'violations']
                                                                       [index1]
-                                                                      ['Amount']
+                                                                      ['amount']
                                                                   .toString(),
                                                               fontSize: 15,
                                                               fontFamily:
