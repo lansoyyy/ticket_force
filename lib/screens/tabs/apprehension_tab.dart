@@ -657,13 +657,13 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                             for (int i = 0; i < selected.length; i++)
                               ListTile(
                                 leading: TextWidget(
-                                  text: '${selected[i]['Name of Violation']}',
+                                  text: '${selected[i]['name']}',
                                   fontSize: 14,
                                   fontFamily: 'Bold',
                                   color: Colors.red,
                                 ),
                                 trailing: TextWidget(
-                                  text: '${selected[i]['Amount']}',
+                                  text: '${selected[i]['amount']}',
                                   fontSize: 14,
                                   fontFamily: 'Bold',
                                   color: Colors.red,
@@ -675,7 +675,7 @@ class _ApprehensionTabState extends State<ApprehensionTab> {
                                 alignment: Alignment.topRight,
                                 child: TextWidget(
                                   text:
-                                      '[${selected.fold(0, (acc, violation) => acc + int.parse(violation["Amount"].toString()))}]',
+                                      '[${selected.fold(0, (acc, violation) => acc + int.parse(violation["amount"].toString()))}]',
                                   fontSize: 14,
                                   fontFamily: 'Bold',
                                   color: Colors.red,
